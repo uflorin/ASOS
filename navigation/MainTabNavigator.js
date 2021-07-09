@@ -1,85 +1,92 @@
-import React from 'react';
-import { Image} from 'react-native';
-import { createBottomTabNavigator, createStackNavigator } from 'react-navigation';
-
-import HomePage from '../screens/Homepage';
-import SearchScreen from '../screens/Search';
 import Basket from '../screens/Basket';
-import Favourites from '../screens/Favourites'
+import Favourites from '../screens/Favourites';
+import HomePage from '../screens/Homepage';
+import { Image } from 'react-native';
+import ProductInfo from '../screens/ProductInfo';
+import ProductListPage from '../screens/ProductListPage';
 import Profile from '../screens/Profile';
-import ProductInfo from '../screens/ProductInfo'
-import ProductListPage from '../screens/ProductListPage'
+import React from 'react';
+import SearchScreen from '../screens/Search';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
 
-const HomeStack = createStackNavigator({
-  Home: {screen: HomePage },
-  ProductListPage: {screen: ProductListPage},  
-  ProductInfo: {screen: ProductInfo}
-},{ headerMode: 'none' });
+const Stack = createStackNavigator();
 
-const SearchStack = createStackNavigator({
-  Search: {screen: SearchScreen}
-},{ headerMode: 'none' });
+const HomeStack = () => (
+  <Stack.Navigator headerMode='none'>
+    <Stack.Screen name='Home' component={HomePage} />
+    <Stack.Screen name='ProductListPage' component={ProductListPage} />
+    <Stack.Screen name='ProductInfo' component={ProductInfo} />
+  </Stack.Navigator>
+);
 
-export default createBottomTabNavigator({
-  Home: {
-    screen: HomeStack,
-    navigationOptions: {
-      tabBarLabel: 'HOME',
-      tabBarIcon: ({ tintColor }) => (
-        <Image source={require('../assets/images/asos-logo.png')} style={{ height: 24, width: 24, tintColor: tintColor }} />
-      )
-    }
-  },
+const SearchStack = () => (
+  <Stack.Navigator headerMode='none'>
+    <Stack.Screen name='Search' component={SearchScreen} />
+  </Stack.Navigator>
+);
 
-  Search: {
-    screen: SearchStack,
-    navigationOptions: {
-      tabBarLabel: 'SEARCH',
-      tabBarIcon: ({ tintColor }) => (
-        <Image source={require('../assets/images/search.png')} style={{ height: 30, width: 30, resizeMode:'contain',tintColor: tintColor }} />
-      )
-    }
-  },
-  Basket: {
-    screen: Basket,
-    navigationOptions: {
-      tabBarLabel: 'BASKET',
-      tabBarIcon: ({ tintColor }) => (
-        <Image source={require('../assets/images/bag.png')} style={{ height: 24, width: 24, tintColor: tintColor }} />
-      )
-    }
-  },
-  Favourites: {
-    screen: Favourites,
-    navigationOptions: {
-      tabBarLabel: 'Favourites',
-      tabBarIcon: ({ tintColor }) => (
-        <Image source={require('../assets/images/favourite.png')} style={{ height: 24, width: 24, resizeMode:'contain', tintColor: tintColor }} />
-      )
-    }
-  },
-  Profile: {
-    screen: Profile,
-    navigationOptions: {
-      tabBarLabel: 'PROFILE',
-      tabBarIcon: ({ tintColor }) => (
-        <Image source={require('../assets/images/user.png')} style={{ height: 24, width: 24, tintColor: tintColor }} />
-      )
-    }
-  }
+const Tab = createBottomTabNavigator();
 
-}, {
-  tabBarOptions: {
-    activeTintColor: 'rgb(53,51,53)',
-    inactiveTintColor: 'rgb(173,173,173)',
-    showLabel:false,
-    style: {
-      backgroundColor: 'white',
-      borderTopWidth: 0,
-      shadowOffset: { width: 5, height: 3 },
-      shadowColor: 'black',
-      shadowOpacity: 0.5,
-      elevation: 1
-    }
-  }
-});
+export default () => (
+  <Tab.Navigator
+    tabBarOptions={{
+      activeTintColor: 'rgb(53,51,53)',
+      inactiveTintColor: 'rgb(173,173,173)',
+      showLabel: false,
+      style: {
+        backgroundColor: 'white',
+        borderTopWidth: 0,
+        shadowOffset: { width: 5, height: 3 },
+        shadowColor: 'black',
+        shadowOpacity: 0.5,
+        elevation: 1,
+      },
+    }}
+  >
+    <Tab.Screen
+      name='Home'
+      component={HomeStack}
+      options={{
+        tabBarLabel: 'HOME',
+        tabBarIcon: ({ tintColor }) => <Image source={require('../assets/images/asos-logo.png')} style={{ height: 24, width: 24, tintColor: tintColor }} />,
+      }}
+    />
+    <Tab.Screen
+      name='Search'
+      component={SearchStack}
+      options={{
+        tabBarLabel: 'SEARCH',
+        tabBarIcon: ({ tintColor }) => (
+          <Image source={require('../assets/images/search.png')} style={{ height: 30, width: 30, resizeMode: 'contain', tintColor: tintColor }} />
+        ),
+      }}
+    />
+    <Tab.Screen
+      name='Basket'
+      component={Basket}
+      options={{
+        tabBarLabel: 'BASKET',
+        tabBarIcon: ({ tintColor }) => <Image source={require('../assets/images/bag.png')} style={{ height: 24, width: 24, tintColor: tintColor }} />,
+      }}
+    />
+    <Tab.Screen
+      name='Favourites'
+      component={Favourites}
+      options={{
+        tabBarLabel: 'Favourites',
+        tabBarIcon: ({ tintColor }) => (
+          <Image source={require('../assets/images/favourite.png')} style={{ height: 24, width: 24, resizeMode: 'contain', tintColor: tintColor }} />
+        ),
+      }}
+    />
+    <Tab.Screen
+      name='Profile'
+      component={Profile}
+      options={{
+        tabBarLabel: 'PROFILE',
+        tabBarIcon: ({ tintColor }) => <Image source={require('../assets/images/user.png')} style={{ height: 24, width: 24, tintColor: tintColor }} />,
+      }}
+    />
+  </Tab.Navigator>
+);
